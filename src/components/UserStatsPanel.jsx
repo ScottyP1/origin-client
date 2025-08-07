@@ -1,0 +1,27 @@
+const UserStatsPanel = ({ user, trackedRepos, githubRepos }) => {
+  return (
+    <div className="bg-black/30 border border-gray-600 rounded-xl backdrop-blur-md p-6 font-[Mokoto] text-white w-full h-[400px] flex flex-col justify-center gap-6 shadow-lg">
+      <div className="flex justify-center items-center gap-3">
+        <h2 className="text-2xl uppercase">GitHub Status</h2>
+        <div className="bg-green-500 w-3 h-3 rounded-full animate-pulse" />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 text-lg mt-4 text-center">
+        <InfoItem label="User" value={`@${user?.username}`} />
+        <InfoItem label="Tracked Repos" value={trackedRepos?.length} />
+        <InfoItem label="GitHub Repos" value={githubRepos?.length} />
+        <InfoItem label="Repo Issues" value={user?.total_open_issues} />
+        <InfoItem label="Followers" value={user?.followers || 0} />
+        <InfoItem label="Following" value={user?.following || 0} />
+      </div>
+    </div>
+  );
+};
+
+const InfoItem = ({ label, value }) => (
+  <div className="text-gray-300">
+    <span className="text-gray-500">{label}:</span> {value}
+  </div>
+);
+
+export default UserStatsPanel;
