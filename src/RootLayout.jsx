@@ -7,6 +7,7 @@ import Particles from "./components/Particles";
 import frame from "./assets/frame.png";
 import frame2 from "./assets/frame2.png";
 import NavBar from "./components/NavBar";
+import TargetCursor from "./components/TargetCursor";
 
 import { AuthContext } from "./context/AuthContext";
 
@@ -30,7 +31,8 @@ export default function RootLayout() {
       </div>
 
       {/* Scrollable content below nav */}
-      <div className="max-w-[1200px] 2xl:max-w-[1500px] mx-auto pt-32">
+      <div className="relative z-10 max-w-[1200px] 2xl:max-w-[1500px] mx-auto pt-32">
+        <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Outlet />
       </div>
 

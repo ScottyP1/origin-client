@@ -7,9 +7,11 @@ import RegisterPage from "./pages/RegisterPage";
 import DashBoardPage from "./pages/DashboardPage";
 import GitHubCallback from "./pages/GitHubCallback";
 import RepoPage from "./pages/RepoPage";
+import AlertsPage from "./pages/AlertsPage";
 
 import { IndexLoader } from "./loaders/IndexLoader";
 import { AuthLoader } from "./loaders/AuthLoader";
+import { DashBoardLoader } from "./loaders/DashBoardLoader";
 
 const router = createBrowserRouter([
   {
@@ -19,11 +21,16 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <DashBoardPage />,
-        loader: AuthLoader,
+        loader: DashBoardLoader,
       },
       {
         path: "repos",
         element: <RepoPage />,
+        loader: AuthLoader,
+      },
+      {
+        path: "alerts",
+        element: <AlertsPage />,
         loader: AuthLoader,
       },
       { path: "login", element: <LoginPage />, loader: IndexLoader },

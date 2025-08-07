@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import api from "../api/axios"; // <-- make sure this path is correct
+import api from "../api/axios";
 
 export const AuthContext = createContext();
 
@@ -8,37 +8,39 @@ export const AuthProvider = ({ children }) => {
     localStorage.getItem("access") || null
   );
   const [user, setUser] = useState(null);
-  const [trackedRepos, setTrackedRepos] = useState([]);
-  const [githubRepos, setGithubRepos] = useState([]);
-  const [allActivity, setAllActivity] = useState([]);
+  const [allRepos, setAllRepos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const isAuthenticated = !!accessToken;
 
   useEffect(() => {
-    const fetchUserAndRepos = async () => {
+    if (accessToken) {
+      localStorage.setItem("access", accessToken);
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
       if (!accessToken) {
         setLoading(false);
         return;
       }
 
       try {
-        const userRes = await api.get("auth/user/");
-        const githubRepoData = await api.get("repos/");
-        const activityData = await api.get("activity/");
+        const allRepoData = await api.get("repos/all/");
+        setAllRepos(allRepoData.data);
 
-        setUser(userRes.data);
-        setTrackedRepos(userRes.data.repos || []);
-        setGithubRepos(githubRepoData.data || []);
-        setAllActivity(activityData.data || []);
+        await api.get("activity/sync/");
+        const userData = await api.get("auth/user/");
+        setUser(userData.data);
       } catch (err) {
-        console.error("Failed to fetch user or repos", err);
+        console.error("Failed to fetch user:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserAndRepos();
+    fetchUser();
   }, [accessToken]);
 
   return (
@@ -47,12 +49,9 @@ export const AuthProvider = ({ children }) => {
         accessToken,
         setAccessToken,
         user,
-        allActivity,
         setUser,
-        trackedRepos,
-        setTrackedRepos,
-        githubRepos,
-        setGithubRepos,
+        allRepos,
+        setAllRepos,
         isAuthenticated,
         loading,
       }}

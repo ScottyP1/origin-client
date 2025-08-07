@@ -1,4 +1,4 @@
-const UserStatsPanel = ({ user, trackedRepos, githubRepos }) => {
+const UserStatsPanel = ({ user }) => {
   return (
     <div className="bg-black/30 border border-gray-600 rounded-xl backdrop-blur-md p-6 font-[Mokoto] text-white w-full h-[400px] flex flex-col justify-center gap-6 shadow-lg">
       <div className="flex justify-center items-center gap-3">
@@ -8,8 +8,8 @@ const UserStatsPanel = ({ user, trackedRepos, githubRepos }) => {
 
       <div className="grid grid-cols-2 gap-4 text-lg mt-4 text-center">
         <InfoItem label="User" value={`@${user?.username}`} />
-        <InfoItem label="Tracked Repos" value={trackedRepos?.length} />
-        <InfoItem label="GitHub Repos" value={githubRepos?.length} />
+        <InfoItem label="Tracked Repos" value={user?.tracked_repos?.length} />
+        <InfoItem label="GitHub Repos" value={user?.total_repos} />
         <InfoItem label="Repo Issues" value={user?.total_open_issues} />
         <InfoItem label="Followers" value={user?.followers || 0} />
         <InfoItem label="Following" value={user?.following || 0} />

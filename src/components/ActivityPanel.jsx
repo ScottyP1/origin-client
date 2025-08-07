@@ -18,7 +18,10 @@ const ActivityPanel = ({ data, loading }) => {
           : (data || []).map((item, index) => (
               <li key={index} className="flex flex-col text-sm text-gray-300">
                 <span className="text-purple-400">[{item?.repo_name}]</span>
-                <span>{item?.summary}</span>
+                <span>
+                  {item?.type} -{" "}
+                  <span className="text-gray-400">{item?.author}</span>
+                </span>
                 <span className="text-gray-500 text-xs">{item?.time_ago}</span>
               </li>
             ))}

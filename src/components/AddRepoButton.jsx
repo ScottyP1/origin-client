@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { BiMessageSquareAdd } from "react-icons/bi";
 
@@ -7,25 +7,19 @@ import api from "../api/axios";
 const AddRepoButton = () => {
   const [toggle, setToggle] = useState(false);
   const [loadingId, setLoadingId] = useState(null);
+  const { allRepos, setAllRepos, setUser } = useContext(AuthContext);
 
-  const { githubRepos, setGithubRepos, setTrackedRepos } =
-    useContext(AuthContext);
+  useEffect(() => {}, [allRepos]);
 
   const handleAdd = async (repo) => {
     setLoadingId(repo.id);
     try {
-      const payload = {
-        name: repo.name,
-        html_url: repo.html_url,
-        description: repo.description,
-        owner: {
-          login: repo.owner.login,
-        },
-      };
-
-      const response = await api.post("repos/add/", payload);
-      setTrackedRepos(trackedRes.data.repos);
-      setGithubRepos((prev) => prev.filter((r) => r.id !== repo.id));
+      const response = await api.post("repos/add/", repo);
+      setUser((prevUser) => ({
+        ...prevUser,
+        tracked_repos: [...prevUser.tracked_repos, response.data],
+      }));
+      setAllRepos((prev) => prev.filter((r) => r.id !== repo.id));
     } catch (e) {
       console.error("Failed to add repo:", e);
     } finally {
@@ -55,8 +49,8 @@ const AddRepoButton = () => {
               Select a Repo to Add
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-              {githubRepos && githubRepos.length > 0 ? (
-                githubRepos.map((repo) => (
+              {allRepos && allRepos.length > 0 ? (
+                allRepos.map((repo) => (
                   <div
                     key={repo.id}
                     className="p-4 border border-gray-600 rounded bg-gray-900 flex flex-col"

@@ -67,7 +67,7 @@ const SideBar = () => {
         icon={<RiDashboardFill size={50} />}
       />
       <SidebarLink
-        to="/dashboard/alerts"
+        to="/alerts"
         label="Alerts"
         icon={<TbAlertHexagonFilled size={50} />}
       />

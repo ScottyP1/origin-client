@@ -21,14 +21,11 @@ export default function GitHubCallback() {
 
         const { access, refresh, user } = res.data;
 
-        // Save JWT tokens to localStorage & React Context
         localStorage.setItem("access", access);
         localStorage.setItem("refresh", refresh);
         setAccessToken(access);
         setUser(user);
-        setGithubConnected(true);
 
-        // Redirect to your dashboard or protected route
         navigate("/dashboard");
       } catch (err) {
         console.error("GitHub OAuth error:", err);
