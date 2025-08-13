@@ -50,7 +50,7 @@ const Navbar = () => {
               ) : (
                 <a
                   className="absolute top-15 right-0 text-base text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition"
-                  href="https://github.com/login/oauth/authorize?client_id=Ov23lieEn97vtUEbV4YA&redirect_uri=https://origin-client-jade.vercel.app/github-callback&scope=user"
+                  href="https://github.com/login/oauth/authorize?client_id=Ov23lieEn97vtUEbV4YA&redirect_uri=https://www.origin.services/github-callback&scope=user"
                 >
                   Connect Github
                 </a>
