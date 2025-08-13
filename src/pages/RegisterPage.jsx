@@ -37,7 +37,15 @@ export default function RegisterPage() {
       await api.post("auth/send-code/", { email: data.email });
       setStep(2);
     } catch (err) {
-      setError("Failed to send code.");
+      if (err.response && err.response.data) {
+        const msg =
+          err.response.data.error ||
+          err.response.data.detail ||
+          "Failed to send code.";
+        setError({ detail: msg });
+      } else {
+        setError({ detail: "Failed to send code." });
+      }
     } finally {
       setSubmitting(false);
     }
