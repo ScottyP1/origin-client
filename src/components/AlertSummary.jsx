@@ -6,7 +6,7 @@ const AlertSummary = () => {
   const { user } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRepo, setSelectedRepo] = useState(null);
-  console.log(user);
+
   const visibleActivities = useMemo(() => {
     if (!user?.tracked_repos?.length) return [];
     if (selectedRepo) {
