@@ -6,8 +6,8 @@ import frame from "./assets/frame.png";
 
 export default function RootLayout() {
   const { pathname } = useLocation();
-  const hideFrameOn = ["/", "/login", "/register"];
-  const showFrame = !hideFrameOn.includes(pathname);
+  const hideFrameOn = ["/", "/login", "/register", "/404"];
+  const showFrame = hideFrameOn.includes(location.pathname);
 
   return (
     <div className="relative min-h-[100svh] w-screen overflow-x-hidden bg-black">
@@ -35,7 +35,7 @@ export default function RootLayout() {
       </main>
 
       {/* HUD Frame */}
-      {showFrame && (
+      {!showFrame && (
         <img
           src={frame}
           alt="frame"

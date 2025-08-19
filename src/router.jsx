@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import RootLayout from "./RootLayout";
 
 import IndexPage from "./pages/IndexPage";
@@ -9,6 +13,7 @@ import GitHubCallback from "./pages/GitHubCallback";
 import RepoPage from "./pages/RepoPage";
 import AlertsPage from "./pages/AlertsPage";
 import AccountPage from "./pages/AccountPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 import { IndexLoader } from "./loaders/IndexLoader";
 import { AuthLoader } from "./loaders/AuthLoader";
@@ -42,6 +47,8 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage />, loader: IndexLoader },
       { path: "register", element: <RegisterPage />, loader: IndexLoader },
       { path: "github-callback", element: <GitHubCallback /> },
+      { path: "*", element: <Navigate to="/404" /> },
+      { path: "/404", element: <NotFoundPage /> },
     ],
   },
 ]);
