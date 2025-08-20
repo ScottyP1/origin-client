@@ -45,19 +45,7 @@ const Navbar = () => {
           {/* Right: Avatar or Login */}
           <div className="justify-self-end">
             {user ? (
-              user.github_connected ? (
-                <UserSettingsMenu user={user} logout={logout} />
-              ) : (
-                <a
-                  className="absolute top-15 right-0 text-base text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition"
-                  href="https://github.com/login/oauth/authorize
-  ?client_id=Ov23lieEn97vtUEbV4YA
-  &redirect_uri=https://www.origin.services/github-callback
-  &scope=read:user"
-                >
-                  Connect Github
-                </a>
-              )
+              <UserSettingsMenu user={user} logout={logout} />
             ) : (
               pathname === "/" && (
                 <Link
@@ -76,25 +64,16 @@ const Navbar = () => {
         </div>
 
         {/* DESKTOP */}
-        <div className="hidden sm:block ">
+        <div className="justify-self-end">
           {user ? (
-            user.github_connected ? (
-              <UserSettingsMenu user={user} logout={logout} />
-            ) : (
-              <a
-                className="absolute top-15 right-0 text-base text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-md transition"
-                href="https://github.com/login/oauth/authorize?client_id=Ov23lieEn97vtUEbV4YA&redirect_uri=https://www.origin.services/github-callback&scope=user"
-              >
-                Connect Github
-              </a>
-            )
+            <UserSettingsMenu user={user} logout={logout} />
           ) : (
             pathname === "/" && (
               <Link
                 to="/login"
-                className="absolute top-5 right-0 cursor-target inline-flex items-center gap-6 text-white text-lg bg-gradient-to-br from-[#511f87] via-[#302b63] to-[#0b0b65] py-3 px-6 md:px-20 rounded-full hover:from-[#602194] hover:via-[#473f87] hover:to-[#0e0e6e] transition-all duration-300"
+                className="absolute top-4 right-2 cursor-target inline-flex items-center gap-6 text-white text-lg bg-gradient-to-br from-[#511f87] via-[#302b63] to-[#0b0b65] py-1 px-4 md:px-20 rounded-full hover:from-[#602194] hover:via-[#473f87] hover:to-[#0e0e6e] transition-all duration-300"
               >
-                Login / Register
+                Login
               </Link>
             )
           )}

@@ -13,7 +13,12 @@ const UserSettingsMenu = ({ user, logout }) => {
   const btnRef = useRef(null);
   const menuRef = useRef(null);
 
-  // Close on click outside
+  const GITHUB_AUTHORIZE_URL =
+    "https://github.com/login/oauth/authorize" +
+    "?client_id=Ov23lieEn97vtUEbV4YA" +
+    "&redirect_uri=https://www.origin.services/github-callback" +
+    "&scope=read:user";
+
   useEffect(() => {
     function onDocClick(e) {
       if (!open) return;
@@ -88,22 +93,24 @@ const UserSettingsMenu = ({ user, logout }) => {
               description="Profile, email & password"
               onClick={() => setOpen(false)}
             />
-            {/* 
-            <MenuItem
-              asButton
-              icon={dark ? <FiSun /> : <FiMoon />}
-              label={dark ? "Light mode" : "Dark mode"}
-              description={dark ? "Switch to Dark" : "Switch to Light"}
-              onClick={() => setDark((v) => !v)}
-            /> */}
-            <MenuItem
-              to={user.github_url}
-              icon={<FiGithub />}
-              label="GitHub"
-              description={
-                user?.github_connected ? "Connected" : "Not connected"
-              }
-            />
+            {user?.github_connected ? (
+              <MenuItem
+                to={user.github_url || "/repos"}
+                icon={<FiGithub />}
+                label="GitHub"
+                description="Connected"
+                onClick={() => setOpen(false)}
+              />
+            ) : (
+              <MenuItem
+                to={GITHUB_AUTHORIZE_URL}
+                external
+                icon={<FiGithub />}
+                label="Connect GitHub"
+                description="Link your GitHub account"
+                onClick={() => setOpen(false)}
+              />
+            )}
 
             <Divider />
 
