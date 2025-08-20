@@ -71,11 +71,11 @@ export default function LoginPage() {
         {error?.password && (
           <span className="text-red-500 text-sm">{error.password[0]}</span>
         )}
-        <div className="text-sm text-center text-white/70 hover:text-white transition">
+        {/* <div className="text-sm text-center text-white/70 hover:text-white transition">
           <Link to="#" className="underline">
             Forgot Password?
           </Link>
-        </div>
+        </div> */}
 
         {/* Submit button */}
         <SubmitButton label="Sign In" onClick={handleSubmit} />

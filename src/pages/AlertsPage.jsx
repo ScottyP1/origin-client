@@ -9,7 +9,7 @@ export default function AlertsPage() {
   if (loading) return <h1>Loading</h1>;
 
   return (
-    <div className="opacity-0 animate-fade-in transition-opacity duration-500 ease-in">
+    <div className="opacity-0 animate-fade-in transition-opacity duration-500 ease-in lg:h-[calc(100vh-100px)] lg:overflow-hidden">
       <AlertSummary user={user} />
     </div>
   );

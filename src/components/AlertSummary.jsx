@@ -30,7 +30,7 @@ const AlertSummary = () => {
     ) || 0;
 
   return (
-    <div className="relative text-white font-[Mokoto]">
+    <div className="text-white font-[Mokoto]">
       {/* Summary row */}
       <div className="flex flex-col items-center gap-2 text-yellow-400 text-sm sm:text-base text-center px-4">
         <h1 className="leading-snug">
@@ -44,7 +44,7 @@ const AlertSummary = () => {
             <> across {user?.tracked_repos?.length || 0} repositories</>
           )}
         </h1>
-        <div className="flex gap-3 flex-wrap justify-center text-xs sm:text-sm text-white/80">
+        <div className="flex gap-3 justify-center text-xs sm:text-sm text-white/80">
           <span>[ prs: {user?.total_open_prs || 0} ]</span>
           <span>[ commits: {user?.total_commits || 0} ]</span>
           <span className="hidden xs:inline">[ total: {totalAcrossAll} ]</span>
@@ -69,13 +69,13 @@ const AlertSummary = () => {
       </div>
 
       {/* Activities list */}
-      <div className="mt-6 mx-auto w-full max-w-4xl px-4">
+      <div className="mt-6 mx-auto w-full max-w-4xl px-4 md:max-h-[68vh] md:overflow-y-auto">
         {visibleActivities.length === 0 ? (
           <div className="text-center text-white/60 py-8">
             No activity to show.
           </div>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-3 lg:max-h-[65vh] lg:overflow-y-auto lg:pr-2 [scrollbar-gutter:stable]">
             {visibleActivities.map((a, i) => (
               <li
                 key={a.id ?? `${a.__repoName}-${a.type || "evt"}-${i}`}

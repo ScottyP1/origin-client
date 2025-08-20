@@ -40,7 +40,7 @@ api.interceptors.response.use(
         console.error("Refresh failed", refreshError);
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
-        redirect("/");
+        window.location.href = "/";
       }
     }
 

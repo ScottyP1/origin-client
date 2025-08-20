@@ -88,14 +88,14 @@ const UserSettingsMenu = ({ user, logout }) => {
               description="Profile, email & password"
               onClick={() => setOpen(false)}
             />
-
+            {/* 
             <MenuItem
               asButton
               icon={dark ? <FiSun /> : <FiMoon />}
               label={dark ? "Light mode" : "Dark mode"}
               description={dark ? "Switch to Dark" : "Switch to Light"}
               onClick={() => setDark((v) => !v)}
-            />
+            /> */}
             <MenuItem
               to={user.github_url}
               icon={<FiGithub />}

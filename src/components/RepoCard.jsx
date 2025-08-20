@@ -38,13 +38,13 @@ const RepoCard = ({ repo, setUser, setAllRepos }) => {
       <div className="cursor-target bg-black/30 border border-white/10 backdrop-blur-md p-5 rounded-xl flex flex-col gap-2 font-[Mokoto] shadow-md hover:border-purple-300 transition duration-300">
         <div className="flex items-center">
           <h1 className="text-white text-lg tracking-wider">{repo.name}</h1>
-          <button
+          {/* <button
             className="ml-auto p-1 rounded hover:bg-white/10"
             onClick={() => setToggle((t) => !t)}
             aria-label="Open settings"
           >
             <PiGearSixLight color="white" size={24} />
-          </button>
+          </button> */}
         </div>
 
         <div className="text-sm text-gray-400 mt-2 space-y-1">
