@@ -8,6 +8,7 @@ export default function Step2Code({
   onNext,
   submitting,
   error,
+  className,
 }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,7 +18,7 @@ export default function Step2Code({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-6 p-8 w-full max-w-md rounded-3xl bg-gradient-to-br from-[#511f87]/40 via-[#302b63]/40 to-[#0b0b65]/40 backdrop-blur-md shadow-xl"
+      className={`flex flex-col gap-6 p-8 w-full max-w-md rounded-3xl bg-gradient-to-br from-[#511f87]/40 via-[#302b63]/40 to-[#0b0b65]/40 backdrop-blur-md shadow-xl ${className}`}
     >
       <p className="text-sm text-gray-300">
         We sent a 6-digit code to <strong>{email}</strong>.

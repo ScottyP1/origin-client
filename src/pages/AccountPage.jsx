@@ -5,16 +5,74 @@ import { FaRegEdit } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api/axios";
 
+import Step1Email from "../components/register/Step1";
+import Step2Code from "../components/register/Step2";
+
 export default function AccountPage() {
   const { user, loading, logout, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [editingEmail, setEditingEmail] = useState(false);
-  const [email, setEmail] = useState(user?.email || "");
-  const [error, setError] = useState("");
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState({ email: user?.email, code: "" });
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   if (loading) return <h1>Loading</h1>;
+
+  const handleChange = (e) => {
+    setError(null);
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const sendCode = async () => {
+    if (!data.email) {
+      setError({ detail: "Email is required." });
+      return;
+    }
+    try {
+      setSubmitting(true);
+      await api.post("auth/send-code/", { email: data.email });
+      setStep(2);
+    } catch (err) {
+      const msg = err?.response?.data?.error;
+      setError({ detail: msg });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  const verifyCode = async () => {
+    if (!data.code) {
+      setError({ detail: "Verification code is required." });
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await api.post("auth/verify-code/", {
+        email: data.email,
+        code: data.code,
+      });
+
+      if (res.status === 200) {
+        const putRes = await api.put("auth/user/", { email: data.email });
+
+        const updatedEmail = putRes?.data?.email || data.email;
+        setUser((prev) => ({ ...prev, email: updatedEmail }));
+      }
+
+      setEditingEmail(false);
+      setStep(1);
+      setData({ email: data.email, code: "" });
+      setError(null);
+    } catch (err) {
+      const msg = err?.response?.data?.error;
+      setError({ detail: msg });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleDeleteAccount = async () => {
     try {
@@ -22,64 +80,64 @@ export default function AccountPage() {
       logout();
       navigate("/");
     } catch (e) {
-      setError("Failed to delete account. Try again.");
+      setError({ detail: "Failed to delete account. Try again." });
       console.error(e);
     }
   };
 
-  const handleUpdateEmail = async () => {
-    try {
-      const { data } = await api.put("auth/user/", { email });
-      setUser((prev) => ({ ...prev, email: data?.email ?? email }));
-      setEditingEmail(false);
-    } catch (e) {
-      setError(e.response.data.error);
-      console.error(e.response.data.error);
-    }
-  };
-
   const handleRemoveGithub = async () => {
-    await api.delete("auth/unlink/");
-    const response = await api.get("auth/user/");
-    setUser(response.data);
+    try {
+      await api.delete("auth/unlink/");
+      const response = await api.get("auth/user/");
+      setUser(response.data);
+    } catch (e) {
+      setError({ detail: "Failed to unlink GitHub." });
+    }
   };
 
   return (
     <div className="text-white font-[Mokoto] bg-black/60 backdrop-blur-md md:border md:border-white/20 p-6 md:p-8 rounded-2xl w-full md:w-2/3 lg:w-1/2 mx-auto opacity-0 animate-fade-in">
-      {/* Email row */}
       <AccountItem
         label="Email"
         value={user.email}
-        onEdit={() => setEditingEmail(!editingEmail)}
+        onEdit={() => {
+          setEditingEmail((v) => !v);
+          setStep(1);
+          setData({ email: user?.email, code: "" });
+          setError(null);
+        }}
       >
         {editingEmail && (
-          <div className="mt-3 grid grid-cols-3 gap-3 items-center">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-transparent border border-white/30 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#ADDCF2] col-span-2"
-              placeholder="Enter new email"
-            />
-            <button
-              onClick={handleUpdateEmail}
-              className="cursor-target px-4 py-2 rounded-lg border border-white/30 hover:bg-white/10 disabled:opacity-50"
-            >
-              Save
-            </button>
-            {error && <span className="text-red-500 text-sm">{error}</span>}
+          <div className="mt-3">
+            {step === 1 && (
+              <Step1Email
+                email={data.email}
+                onChange={handleChange}
+                onNext={sendCode}
+                submitting={submitting}
+                error={error}
+                className="bg-none"
+              />
+            )}
+            {step === 2 && (
+              <Step2Code
+                email={data.email}
+                code={data.code}
+                onChange={handleChange}
+                onNext={verifyCode}
+                submitting={submitting}
+                error={error}
+                className="bg-none text-center"
+              />
+            )}
           </div>
         )}
       </AccountItem>
-
-      {/* Password row (masked, you can wire a modal/form later) */}
-      <AccountItem label="Password" value="***************" />
 
       {/* GitHub + Name */}
       <AccountItem label="GitHub Username" value={user.username || "—"} />
       <AccountItem label="Full Name" value={user.full_name || "—"} />
 
-      {/* Actions */}
       {!confirmDelete ? (
         <div className="flex flex-col md:flex-row gap-4 mt-10">
           <button
@@ -117,6 +175,10 @@ export default function AccountPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {error?.detail && (
+        <p className="mt-4 text-red-400 text-sm">{error.detail}</p>
       )}
     </div>
   );

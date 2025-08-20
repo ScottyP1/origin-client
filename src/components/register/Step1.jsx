@@ -6,6 +6,7 @@ export default function Step1Email({
   onChange,
   onNext,
   submitting,
+  className,
   error,
 }) {
   const handleSubmit = (e) => {
@@ -16,7 +17,7 @@ export default function Step1Email({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-6 p-8 w-full max-w-md rounded-3xl bg-gradient-to-br from-[#511f87]/40 via-[#302b63]/40 to-[#0b0b65]/40 backdrop-blur-md shadow-xl"
+      className={`flex flex-col gap-6 p-8 w-full max-w-md rounded-3xl bg-gradient-to-br from-[#511f87]/40 via-[#302b63]/40 to-[#0b0b65]/40 backdrop-blur-md shadow-xl ${className}`}
     >
       <InputField
         label="Email"
